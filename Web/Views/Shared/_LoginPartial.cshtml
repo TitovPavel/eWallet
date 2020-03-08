@@ -1,0 +1,30 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Core.Entities
+
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+
+
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <div class="navbar-right">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">@UserManager.GetUserName(User)</li>
+            <li >
+                <form asp-controller="Account" asp-action="LogOff" asp-route-returnUrl="@Url.Action("Index", "Home")" method="post" >
+                    <button class="nav-item" type="submit">Logout</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+}
+else
+{
+    <div class="navbar-right">
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item"><a asp-controller="Account" asp-action="Login" class="nav-link">Login</a></li>
+        </ul>
+    </div>
+}

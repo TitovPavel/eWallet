@@ -1,0 +1,72 @@
+﻿
+@model Web.ViewModels.CategoryViewModel
+
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Категории расходов</h1>
+
+@if (Model.ExpenseCategories.Any())
+{
+    <ol>
+        @foreach (var category in Model.ExpenseCategories)
+        {
+            <li>@category.Title</li>
+        }
+    </ol>
+
+}
+
+<form asp-action="CreateExpense" method="post">
+
+    <div class="form-group">
+        <label asp-for="@Model.CreateExpense.Title" class="control-label"></label>
+        <input asp-for="@Model.CreateExpense.Title" class="form-control">
+        <span asp-validation-for="@Model.CreateExpense.Title" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 ml-auto mr-auto">
+            <input type="submit" value="Create" class="btn btn-outline-primary btn-block btn-round" />
+        </div>
+    </div>
+</form>
+
+<h1>Категории поступлений</h1>
+
+@if (Model.IncomeCategories.Any())
+{
+    <ol>
+        @foreach (var category in Model.IncomeCategories)
+        {
+            <li>@category.Title</li>
+        }
+    </ol>
+
+}
+
+<form asp-action="CreateIncome" method="post" >
+
+    <div class="form-group">
+        <label asp-for="@Model.CreateIncome.Title" class="control-label"></label>
+        <input asp-for="@Model.CreateIncome.Title" class="form-control">
+        <span asp-validation-for="@Model.CreateIncome.Title" class="text-danger"></span>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 ml-auto mr-auto">
+
+            <input type="submit" value="Create" class="btn btn-outline-primary btn-block btn-round" />
+
+        </div>
+    </div>
+</form>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

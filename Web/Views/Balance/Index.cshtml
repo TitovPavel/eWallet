@@ -1,0 +1,309 @@
+﻿
+@model Web.ViewModels.BalanceViewModel
+
+@{
+    ViewBag.Title = "Title";
+    DateTime dateIncome = Model.CreateIncome.Date == DateTime.MinValue ? DateTime.Now : Model.CreateIncome.Date;
+    DateTime dateExpense = Model.CreateExpense.Date == DateTime.MinValue ? DateTime.Now : Model.CreateExpense.Date;
+}
+
+<div class="row">
+    <div class="col-md-6 ml-auto mr-auto">
+
+        <h3>Доход</h3>
+
+        <form asp-action="CreateIncome" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateIncome.Date" class="label-control"></label>
+                <input asp-for="@Model.CreateIncome.Date" type="text" class="form-control datetimepicker" value=@dateIncome />
+                <span asp-validation-for="@Model.CreateIncome.Date" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateIncome.CategoryId" class="control-label"></label>
+                <select asp-for="@Model.CreateIncome.CategoryId" asp-items="@Model.CreateIncome.Categories" class="form-control">
+                    <option disabled selected>-</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                    <div class="form-group">
+                        <label asp-for="@Model.CreateIncome.CurrencyId" class="control-label"></label>
+                        <select asp-for="@Model.CreateIncome.CurrencyId" asp-items="@Model.CreateIncome.Currencies" class="form-control"></select>
+                        <span asp-validation-for="@Model.CreateIncome.CurrencyId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 ml-auto mr-auto">
+                    <label asp-for="@Model.CreateIncome.SumByn" class="control-label"></label>
+                    <input asp-for="@Model.CreateIncome.SumByn" class="form-control" readonly pattern="\d+(\.\d{2})?" value=@Model.CreateIncome.SumByn.ToString().Replace(',','.')>
+                    <span asp-validation-for="@Model.CreateIncome.SumByn" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateIncome.Sum" class="control-label"></label>
+                <input asp-for="@Model.CreateIncome.Sum" class="form-control" pattern="\d+(\.\d{2})?" value=@Model.CreateIncome.Sum.ToString().Replace(',','.')>
+                <span asp-validation-for="@Model.CreateIncome.Sum" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateIncome.Comment" class="control-label"></label>
+                <textarea asp-for="@Model.CreateIncome.Comment" class="form-control" rows="5"></textarea>
+            </div>
+
+            <input asp-for="@Model.CreateIncome.Rate">
+
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                    <input type="submit" value="Create" class="btn btn-outline-primary btn-block btn-round" />
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="col-md-6 ml-auto mr-auto">
+
+        <h3>Расход</h3>
+
+        <form asp-action="CreateExpense" method="post">
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateExpense.Date" class="label-control"></label>
+                <input asp-for="@Model.CreateExpense.Date" type="text" class="form-control datetimepicker" ) value=@dateExpense />
+                <span asp-validation-for="@Model.CreateExpense.Date" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateExpense.CategoryId" class="control-label"></label>
+                <select asp-for="@Model.CreateExpense.CategoryId" asp-items="@Model.CreateExpense.Categories" class="form-control">
+                    <option disabled selected>-</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                    <div class="form-group">
+                        <label asp-for="@Model.CreateExpense.CurrencyId" class="control-label"></label>
+                        <select asp-for="@Model.CreateExpense.CurrencyId" asp-items="@Model.CreateExpense.Currencies" class="form-control"></select>
+                        <span asp-validation-for="@Model.CreateExpense.CurrencyId" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="col-md-6 ml-auto mr-auto">
+                    <label asp-for="@Model.CreateExpense.SumByn" class="control-label"></label>
+                    <input asp-for="@Model.CreateExpense.SumByn" class="form-control" pattern="\d+(\.\d{2})?" readonly value=@Model.CreateExpense.SumByn.ToString().Replace(',','.')>
+                    <span asp-validation-for="@Model.CreateExpense.SumByn" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateExpense.Sum" class="control-label"></label>
+                <input asp-for="@Model.CreateExpense.Sum" class="form-control" value=@Model.CreateExpense.Sum.ToString().Replace(',','.')>
+                <span asp-validation-for="@Model.CreateExpense.Sum" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="@Model.CreateExpense.Comment" class="control-label"></label>
+                <textarea asp-for="@Model.CreateExpense.Comment" class="form-control" rows="5"></textarea>
+            </div>
+
+            <input asp-for="@Model.CreateExpense.Rate">
+
+            <div class="row">
+                <div class="col-md-6 ml-auto mr-auto">
+                    <input type="submit" value="Create" class="btn btn-outline-primary btn-block btn-round" />
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12 ml-auto mr-auto operations">
+
+        <h2>Операции</h2>
+
+        <form method="get">
+            <div class="form-inline form-group">
+                <input name="SearchString" id="SearchString" class="form-control form-control-sm" placeholder="Поиск" value="@Model.SearchString" />
+                <button asp-fragment="SearchString" type="submit" class="btn btn-neutral  btn-just-icon btn-round"><i class="nc-icon nc-zoom-split"></i></button>
+            </div>
+        </form>
+
+        @if (Model.Operations.Count() > 0)
+        {
+
+
+            <table class="table table-bordered table-hover">
+                <tr>
+                    <th>
+                        <a asp-fragment="SearchString" asp-action="Index" asp-route-sortOrder="@Model.SortOperations.DateTimeSort" asp-route-searchString="@Model.SearchString">
+                            Дата операции
+                        </a>
+                    </th>
+                    <th>
+                        Сумма
+                    </th>
+                    <th>
+                        <a asp-fragment="SearchString" asp-action="Index" asp-route-sortOrder="@Model.SortOperations.SumSort" asp-route-searchString="@Model.SearchString">
+                            Сумма в BYN
+                        </a>
+                    </th>
+                    <th>
+                        <a asp-fragment="SearchString" asp-action="Index" asp-route-sortOrder="@Model.SortOperations.CategorySort" asp-route-searchString="@Model.SearchString">
+                            Категория
+                        </a>
+                    </th>
+                    <th>
+                        Комментарий
+                    </th>
+                </tr>
+
+                @foreach (var item in Model.Operations)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(model => item.Date)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Sum)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.SumByn)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(model => item.Comment)
+                        </td>
+                    </tr>
+                }
+            </table>
+
+            <a id="WriteExcelFile" asp-action="WriteExcelFile" asp-route-searchString="@Model.SearchString" class="btn btn-outline-danger btn-block btn-round" name="Excel">Excel</a>
+
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        let incomeRate = $('#CreateIncome_Rate').val();
+        let expenseRate = $('#CreateExpense_Rate').val();;
+
+        function parseDate(s) {
+            var parts = s.split('/');
+            if (parts.length != 3) return NaN;
+
+            return parts[2] + "-" + parts[1] + "-" + parts[0];
+
+        };
+
+
+        function changeIncomeSum() {
+
+            $('#CreateIncome_SumByn').val(( $('#CreateIncome_Sum').val() * incomeRate).toFixed(2));
+
+        };
+
+        function changeExpenseSum() {
+
+            $('#CreateExpense_SumByn').val(($('#CreateExpense_Sum').val() * expenseRate).toFixed(2));
+
+        };
+
+        function rate(url, income) {
+
+
+            $.ajax({
+                url: url,
+                contentType: "application/json",
+                method: "GET",
+                data: {},
+                success: function (data) {
+                    console.log(data);
+                    if (income == true) {
+                        incomeRate = data;
+                        $('#CreateIncome_Rate').val(incomeRate);
+                        changeIncomeSum();
+                    }
+                    else {
+                        expenseRate = data;
+                        $('#CreateExpense_Rate').val(expenseRate);                        
+                        changeExpenseSum();
+                    }
+                },
+                fail: function (data) {
+                    console.log(data);
+                }
+            })
+
+        }
+
+        $("#CreateIncome_CurrencyId").change(function () {
+            let url = "/Balance/Rate?Date=" + (parseDate($('#CreateIncome_Date').val())) + "&Currency=" + $("#CreateIncome_CurrencyId :selected").text();
+            rate(url, true);
+        }
+        );
+
+        $("#CreateExpense_CurrencyId").change(function () {
+            let url = "/Balance/Rate?Date=" + (parseDate($('#CreateExpense_Date').val())) + "&Currency=" + $("#CreateExpense_CurrencyId :selected").text();
+            rate(url, false);
+        }
+        );
+
+
+        $("#CreateIncome_Sum").change(function () {
+            changeIncomeSum();
+        }
+        );
+
+        $("#CreateExpense_Sum").change(function () {
+            changeExpenseSum();
+        }
+        );
+
+
+        $('.datetimepicker').datetimepicker({
+            icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-chevron-up",
+                down: "fa fa-chevron-down",
+                previous: 'fa fa-chevron-left',
+                next: 'fa fa-chevron-right',
+                today: 'fa fa-screenshot',
+                clear: 'fa fa-trash',
+                close: 'fa fa-remove'
+            },
+            format: 'DD/MM/YYYY'
+        }).on('dp.change', function (e) {
+
+            let idDate = $(this).attr("id")
+            if (idDate == "CreateIncome_Date") {
+                let url = "/Balance/Rate?Date=" + (parseDate($('#CreateIncome_Date').val())) + "&Currency=" + $("#CreateIncome_CurrencyId :selected").text();
+                rate(url, true);
+            }
+
+            if (idDate == "CreateExpense_Date") {
+                let url = "/Balance/Rate?Date=" + (parseDate($('#CreateExpense_Date').val())) + "&Currency=" + $("#CreateExpense_CurrencyId :selected").text();
+                rate(url, false);
+            }
+        });
+
+    </script>
+
+}
